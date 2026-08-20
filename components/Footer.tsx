@@ -9,7 +9,6 @@ export default function Footer() {
     { name: "Arrays", href: "/array" },
     { name: "Linked Lists", href: "/linked-list" },
     { name: "Stacks", href: "/stack" },
-    { name: "Queues", href: "/queue" },
     { name: "Binary Trees", href: "/binary-tree" },
   ];
 
@@ -67,7 +66,7 @@ export default function Footer() {
               </li>
               <li>
                 <a 
-                  href="https://github.com/gael55x/DSA-Visualizer" 
+                  href="https://github.com/pratikk70/DSA-Visualizer" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-slate-400 hover:text-sky-400 transition-colors duration-200"
@@ -76,14 +75,7 @@ export default function Footer() {
                   GitHub
                 </a>
               </li>
-              <li>
-                <Link 
-                  href="/docs" 
-                  className="text-slate-400 hover:text-sky-400 transition-colors duration-200"
-                >
-                  Documentation
-                </Link>
-              </li>
+             
             </ul>
           </div>
         </div>

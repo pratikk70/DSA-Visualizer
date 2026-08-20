@@ -30,9 +30,9 @@ export default function AboutPage() {
   ];
 
   const stats = [
-    { number: "5+", label: "Data Structures" },
-    { number: "8+", label: "Tree Types" },
-    { number: "6+", label: "Sorting Algorithms" },
+    { number: "3+", label: "Data Structures" },
+    { number: "1", label: "Tree Type" },
+    { number: "3+", label: "Sorting Algorithms" },
     { number: "100%", label: "Interactive & Free" }
   ];
 
