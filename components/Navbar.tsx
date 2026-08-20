@@ -10,7 +10,6 @@ const dataStructures = [
   { name: 'Arrays', href: '/array' },
   { name: 'Linked Lists', href: '/linked-list' },
   { name: 'Stacks', href: '/stack' },
-  { name: 'Queues', href: '/queue' },
   { name: 'Recursion', href: '/recursion' },
 ];
 
@@ -19,17 +18,10 @@ const sortingAlgorithms = [
   { name: 'Selection Sort', href: '/sorting/selection-sort' },
   { name: 'Insertion Sort', href: '/sorting/insertion-sort' },
   { name: 'Merge Sort', href: '/sorting/merge-sort' },
-  { name: 'Quick Sort', href: '/sorting/quick-sort' },
-  { name: 'Heap Sort', href: '/sorting/heap-sort' },
 ];
 
 const treeStructures = [
-  { name: 'Tree Overview', href: '/trees' },
   { name: 'Binary Search Tree', href: '/binary-tree' },
-  { name: 'AVL Tree', href: '/trees/avl-tree', comingSoon: true },
-  { name: 'Red-Black Tree', href: '/trees/red-black-tree', comingSoon: true },
-  { name: 'B-Tree', href: '/trees/b-tree', comingSoon: true },
-  { name: 'Trie', href: '/trees/trie', comingSoon: true },
 ];
 
 export default function Navbar() {
@@ -129,19 +121,9 @@ export default function Navbar() {
                             key={tree.name}
                             href={tree.href}
                             onClick={() => setIsTreesOpen(false)}
-                            className={cn(
-                              "flex items-center gap-3 px-4 py-2 transition-colors",
-                              tree.comingSoon 
-                                ? "text-slate-500 cursor-not-allowed" 
-                                : "text-slate-300 hover:text-sky-400 hover:bg-slate-700/50"
-                            )}
+                            className="flex items-center gap-3 px-4 py-2 transition-colors text-slate-300 hover:text-sky-400 hover:bg-slate-700/50"
                           >
                             <span className="font-medium">{tree.name}</span>
-                            {tree.comingSoon && (
-                              <span className="text-xs bg-slate-700 px-2 py-1 rounded-full ml-auto">
-                                Soon
-                              </span>
-                            )}
                           </Link>
                         ))}
                       </div>
@@ -244,20 +226,10 @@ export default function Navbar() {
                         key={tree.name}
                         href={tree.href}
                         onClick={() => setIsOpen(false)}
-                        className={cn(
-                          "block p-2 transition-colors",
-                          tree.comingSoon 
-                            ? "text-slate-500 cursor-not-allowed" 
-                            : "text-slate-400 hover:text-sky-400"
-                        )}
+                        className="block p-2 transition-colors text-slate-400 hover:text-sky-400"
                       >
                         <div className="flex items-center justify-between">
                           {tree.name}
-                          {tree.comingSoon && (
-                            <span className="text-xs bg-slate-700 px-2 py-1 rounded-full">
-                              Soon
-                            </span>
-                          )}
                         </div>
                       </Link>
                     ))}
@@ -298,4 +270,4 @@ export default function Navbar() {
       </div>
     </motion.nav>
   );
-} 
+}

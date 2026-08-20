@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, Database, GitBranch, Layers, RotateCcw, ArrowUpDown, Binary, Coffee, Heart, TreePine } from 'lucide-react';
+// Removed RotateCcw since Queues are gone
+import { ArrowRight, Database, GitBranch, Layers, ArrowUpDown, Binary, Coffee, Heart, TreePine } from 'lucide-react';
 
 export default function Features() {
   const dataStructures = [
@@ -26,15 +27,7 @@ export default function Features() {
       icon: Layers,
       href: "/stack",
       color: "from-purple-500 to-violet-500"
-    },
-    {
-      title: "Queues",
-      description: "Learn FIFO principles through enqueue and dequeue animations.",
-      icon: RotateCcw,
-      href: "/queue",
-      color: "from-orange-500 to-red-500"
-    },
-
+    }
   ];
 
   const sortingAlgorithms = [
@@ -56,12 +49,6 @@ export default function Features() {
       href: "/sorting/insertion-sort",
       complexity: "O(n²)"
     },
-    {
-      title: "Quick Sort",
-      description: "Experience the power of divide-and-conquer with partitioning.",
-      href: "/sorting/quick-sort",
-      complexity: "O(n log n)"
-    }
   ];
 
   const treeStructures = [
@@ -70,20 +57,6 @@ export default function Features() {
       description: "Interactive tree operations with insert, search, and delete.",
       href: "/binary-tree",
       complexity: "O(log n)"
-    },
-    {
-      title: "AVL Tree",
-      description: "Self-balancing tree with automatic rotation operations.",
-      href: "/trees/avl-tree",
-      complexity: "O(log n)",
-      comingSoon: true
-    },
-    {
-      title: "Red-Black Tree",
-      description: "Balanced tree with color-based balancing properties.",
-      href: "/trees/red-black-tree",
-      complexity: "O(log n)",
-      comingSoon: true
     }
   ];
 
@@ -171,7 +144,7 @@ export default function Features() {
         </motion.div>
 
         {/* Sorting Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
           {sortingAlgorithms.map((algorithm, index) => (
             <motion.div
               key={algorithm.title}
@@ -219,61 +192,41 @@ export default function Features() {
             </h3>
           </div>
           <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-            Explore hierarchical data structures from basic binary trees to advanced balanced trees.
+            Explore hierarchical data structures with our foundational Binary Search Tree.
           </p>
         </motion.div>
 
         {/* Trees Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 justify-center">
           {treeStructures.map((tree, index) => (
             <motion.div
               key={tree.title}
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.2 + index * 0.1, duration: 0.6 }}
+              className="md:col-start-2"
             >
               <Link
                 href={tree.href}
-                className={`group block p-6 bg-gradient-to-br from-slate-800/50 to-slate-800/30 border border-slate-700 rounded-2xl backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-xl ${
-                  tree.comingSoon 
-                    ? 'opacity-60 cursor-not-allowed' 
-                    : 'hover:from-slate-800/70 hover:to-slate-800/50'
-                }`}
+                className="group block p-6 bg-gradient-to-br from-slate-800/50 to-slate-800/30 border border-slate-700 rounded-2xl backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-xl hover:from-slate-800/70 hover:to-slate-800/50"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className={`text-lg font-bold transition-colors ${
-                    tree.comingSoon 
-                      ? 'text-slate-400' 
-                      : 'text-slate-100 group-hover:text-green-400'
-                  }`}>
+                  <h4 className="text-lg font-bold transition-colors text-slate-100 group-hover:text-green-400">
                     {tree.title}
                   </h4>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-mono bg-slate-700/50 text-slate-300 px-2 py-1 rounded">
                       {tree.complexity}
                     </span>
-                    {tree.comingSoon && (
-                      <span className="text-xs bg-yellow-500/20 text-yellow-400 px-2 py-1 rounded">
-                        Soon
-                      </span>
-                    )}
                   </div>
                 </div>
-                <p className={`text-sm leading-relaxed transition-colors ${
-                  tree.comingSoon 
-                    ? 'text-slate-500' 
-                    : 'text-slate-400 group-hover:text-slate-300'
-                }`}>
+                <p className="text-sm leading-relaxed transition-colors text-slate-400 group-hover:text-slate-300">
                   {tree.description}
                 </p>
                 <div className="flex items-center justify-end mt-4">
                   <ArrowRight 
                     size={14} 
-                    className={`transition-all ${
-                      tree.comingSoon 
-                        ? 'text-slate-500' 
-                        : 'text-slate-400 group-hover:text-green-400 group-hover:translate-x-1'
-                    }`}
+                    className="transition-all text-slate-400 group-hover:text-green-400 group-hover:translate-x-1"
                   />
                 </div>
               </Link>
@@ -293,7 +246,7 @@ export default function Features() {
             className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
           >
             <TreePine size={18} />
-            Explore All Trees
+            Explore Tree Details
             <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </motion.div>
@@ -331,73 +284,8 @@ export default function Features() {
             </div>
           </div>
         </motion.div>
-
-        {/* Support Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.1, duration: 0.8 }}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="bg-slate-800/30 border border-slate-700/50 rounded-2xl p-8 backdrop-blur-sm">
-            <h3 className="text-2xl font-bold text-slate-100 mb-6 text-center">Support This Project</h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Contribute Section */}
-              <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center">
-                    <GitBranch size={20} className="text-green-400" />
-                  </div>
-                  <h4 className="text-lg font-bold text-slate-100">Contribute</h4>
-                </div>
-                <p className="text-slate-400 mb-4 text-sm leading-relaxed">
-                  Help improve DSA Visualizer by contributing new algorithms, fixing bugs, or enhancing the UI.
-                </p>
-                <Link
-                  href="https://github.com/gael55x/DSA-Visualizer"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-green-500/20 hover:bg-green-500/30 border border-green-500/30 text-green-400 hover:text-green-300 rounded-lg text-sm font-medium transition-all duration-300"
-                >
-                  <GitBranch size={16} />
-                  View on GitHub
-                  <ArrowRight size={14} />
-                </Link>
-              </div>
-
-              {/* Coffee Section */}
-              <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-                    <Coffee size={20} className="text-yellow-400" />
-                  </div>
-                  <h4 className="text-lg font-bold text-slate-100">Buy Me a Coffee</h4>
-                </div>
-                <p className="text-slate-400 mb-4 text-sm leading-relaxed">
-                  Enjoyed learning with DSA Visualizer? Support development with a coffee!
-                </p>
-                <Link
-                  href="https://coff.ee/gailleamolg"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-500/30 text-yellow-400 hover:text-yellow-300 rounded-lg text-sm font-medium transition-all duration-300"
-                >
-                  <Coffee size={16} />
-                  Buy Coffee
-                  <Heart size={14} className="text-red-400" />
-                </Link>
-              </div>
-            </div>
-
-            <div className="text-center mt-6 pt-6 border-t border-slate-700/50">
-              <p className="text-slate-500 text-sm">
-                Built with 🔥 for learners by learners
-              </p>
-            </div>
-          </div>
-        </motion.div>
+  
       </div>
     </section>
   );
-} 
+}

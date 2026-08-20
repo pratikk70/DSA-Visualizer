@@ -9,86 +9,10 @@ const treeTypes = [
     description: 'Basic binary tree with search, insert, and delete operations',
     href: '/binary-tree',
     isActive: true,
+    comingSoon: false,
     color: 'bg-blue-500',
     gradient: 'from-blue-500 to-blue-600',
     features: ['Insert/Delete/Search', 'Tree Traversals', 'Interactive Operations']
-  },
-  {
-    id: 'avl-tree',
-    name: 'AVL Tree',
-    description: 'Self-balancing binary search tree with rotation operations',
-    href: '/trees/avl-tree',
-    isActive: false,
-    comingSoon: true,
-    color: 'bg-green-500',
-    gradient: 'from-green-500 to-green-600',
-    features: ['Auto-balancing', 'Rotation Animations', 'Height Calculation']
-  },
-  {
-    id: 'red-black-tree',
-    name: 'Red-Black Tree',
-    description: 'Balanced binary search tree with color properties',
-    href: '/trees/red-black-tree',
-    isActive: false,
-    comingSoon: true,
-    color: 'bg-red-500',
-    gradient: 'from-red-500 to-red-600',
-    features: ['Color Rules', 'Violation Detection', 'Rebalancing']
-  },
-  {
-    id: 'btree',
-    name: 'B-Tree',
-    description: 'Multi-way search tree optimized for disk operations',
-    href: '/trees/b-tree',
-    isActive: false,
-    comingSoon: true,
-    color: 'bg-purple-500',
-    gradient: 'from-purple-500 to-purple-600',
-    features: ['Multi-way Nodes', 'Splitting Operations', 'Database Indexing']
-  },
-  {
-    id: 'trie',
-    name: 'Trie (Prefix Tree)',
-    description: 'Tree structure for storing strings and prefix operations',
-    href: '/trees/trie',
-    isActive: false,
-    comingSoon: true,
-    color: 'bg-orange-500',
-    gradient: 'from-orange-500 to-orange-600',
-    features: ['String Storage', 'Prefix Matching', 'Autocomplete']
-  },
-  {
-    id: 'segment-tree',
-    name: 'Segment Tree',
-    description: 'Tree for range queries and updates',
-    href: '/trees/segment-tree',
-    isActive: false,
-    comingSoon: true,
-    color: 'bg-cyan-500',
-    gradient: 'from-cyan-500 to-cyan-600',
-    features: ['Range Queries', 'Lazy Propagation', 'Array Operations']
-  },
-  {
-    id: 'fenwick-tree',
-    name: 'Fenwick Tree (BIT)',
-    description: 'Binary Indexed Tree for efficient prefix sum queries',
-    href: '/trees/fenwick-tree',
-    isActive: false,
-    comingSoon: true,
-    color: 'bg-pink-500',
-    gradient: 'from-pink-500 to-pink-600',
-    features: ['Prefix Sums', 'Bit Operations', 'Range Updates']
-  },
-  {
-    id: 'heap',
-    name: 'Binary Heap',
-    description: 'Complete binary tree with heap property',
-    href: '/trees/heap',
-    isActive: false,
-    comingSoon: true,
-    color: 'bg-yellow-500',
-    gradient: 'from-yellow-500 to-yellow-600',
-    features: ['Priority Queue', 'Heap Property', 'Min/Max Operations']
   }
 ];
 
@@ -180,17 +104,11 @@ export default function TreesPage() {
         </div>
 
         {/* Statistics Section */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="text-center bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
             <div className="text-3xl font-bold text-blue-400 mb-2">1</div>
             <div className="text-slate-300 font-medium mb-1">Available Now</div>
             <div className="text-slate-500 text-sm">Binary Search Tree</div>
-          </div>
-          
-          <div className="text-center bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
-            <div className="text-3xl font-bold text-yellow-400 mb-2">7</div>
-            <div className="text-slate-300 font-medium mb-1">Coming Soon</div>
-            <div className="text-slate-500 text-sm">Advanced tree structures</div>
           </div>
           
           <div className="text-center bg-slate-800/50 rounded-2xl p-6 border border-slate-700/50">
@@ -205,8 +123,7 @@ export default function TreesPage() {
           <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 border border-slate-700/50 max-w-2xl mx-auto">
             <h2 className="text-2xl font-bold text-slate-100 mb-4">Ready to Start Learning?</h2>
             <p className="text-slate-400 mb-6">
-              Begin with our Binary Search Tree visualizer to understand the fundamentals, 
-              then explore more advanced structures as they become available.
+              Begin with our Binary Search Tree visualizer to understand the fundamentals of hierarchical data structures.
             </p>
             <Link
               href="/binary-tree"
@@ -225,4 +142,4 @@ export default function TreesPage() {
 export const metadata = {
   title: 'Tree Visualizers | DSA Visualizer',
   description: 'Interactive visualizations of various tree data structures including binary search trees, AVL trees, and more.',
-}; 
+};
