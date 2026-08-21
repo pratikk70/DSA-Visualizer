@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Pause, RotateCcw, ChevronDown, GitBranch, ArrowRight, ArrowDown, Repeat, TreePine } from 'lucide-react';
+import { Play, Pause, RotateCcw, ChevronDown, ArrowRight, ArrowDown, TreePine } from 'lucide-react';
 import CodeHighlighter from '../ui/CodeHighlighter';
 import { ToastContainer } from '../ui/Toast';
 import { useToast } from '../../hooks/useToast';
@@ -36,233 +36,69 @@ const RECURSION_TYPES: { [key: string]: RecursionType } = {
     name: 'Direct Recursion',
     icon: ArrowDown,
     description: 'A function calls itself directly',
-    code: `function factorial(n) {
+    code: `int factorial(int n) {
   if (n <= 1) return 1;
   return n * factorial(n - 1); // Direct self-call
 }`,
     examples: [
       {
         name: 'Factorial',
-        code: `function factorial(n) {
+        code: `int factorial(int n) {
   if (n <= 1) return 1;
   return n * factorial(n - 1);
 }`,
-        description: 'Classic factorial calculation',
+        description: 'Classic factorial calculation using direct recursion',
         steps: [
           { lines: [2], description: "Check base case: if n ≤ 1" },
           { lines: [3], description: "Recursive call: n * factorial(n-1)" }
         ]
-      },
-      {
-        name: 'Sum of N',
-        code: `function sum(n) {
-  if (n <= 0) return 0;
-  return n + sum(n - 1);
-}`,
-        description: 'Sum of first n natural numbers',
-        steps: [
-          { lines: [2], description: "Check base case: if n ≤ 0" },
-          { lines: [3], description: "Recursive call: n + sum(n-1)" }
-        ]
-      },
-      {
-        name: 'Power',
-        code: `function power(base, exp) {
-  if (exp === 0) return 1;
-  return base * power(base, exp - 1);
-}`,
-        description: 'Calculate base^exp recursively',
-        steps: [
-          { lines: [2], description: "Check base case: if exp = 0" },
-          { lines: [3], description: "Recursive call: base * power(base, exp-1)" }
-        ]
       }
-    ]
-  },
-  indirect: {
-    name: 'Indirect Recursion',
-    icon: Repeat,
-    description: 'Functions call each other in a cycle',
-    code: `function isEven(n) {
-  if (n === 0) return true;
-  return isOdd(n - 1);
-}
-
-function isOdd(n) {
-  if (n === 0) return false;
-  return isEven(n - 1);
-}`,
-    examples: [
-              {
-          name: 'Even/Odd Check',
-          code: `function isEven(n) {
-  if (n === 0) return true;
-  return isOdd(n - 1);
-}
-
-function isOdd(n) {
-  if (n === 0) return false;
-  return isEven(n - 1);
-}`,
-          description: 'Check if number is even/odd using mutual recursion',
-          steps: [
-            { lines: [2, 7], description: "Check base cases: n = 0" },
-            { lines: [3, 8], description: "Indirect recursive calls" }
-          ]
-        },
-        {
-          name: 'Forest Walk',
-          code: `function walkForest(trees) {
-  if (trees.length === 0) return 0;
-  return walkTree(trees[0]) + walkForest(trees.slice(1));
-}
-
-function walkTree(tree) {
-  if (!tree.children) return 1;
-  return 1 + walkForest(tree.children);
-}`,
-          description: 'Traverse forest and trees mutually',
-          steps: [
-            { lines: [2, 7], description: "Check base cases" },
-            { lines: [3, 8], description: "Mutual recursive calls" }
-          ]
-        }
     ]
   },
   tail: {
     name: 'Tail Recursion',
     icon: ArrowRight,
     description: 'Recursive call is the last operation',
-    code: `function factorial(n, acc = 1) {
+    code: `int factorial(int n, int acc = 1) {
   if (n <= 1) return acc;
   return factorial(n - 1, n * acc); // Tail call
 }`,
     examples: [
-              {
-          name: 'Tail Factorial',
-          code: `function factorial(n, acc = 1) {
-    if (n <= 1) return acc;
-    return factorial(n - 1, n * acc);
-  }`,
-          description: 'Factorial with accumulator (tail-optimizable)',
-          steps: [
-            { lines: [2], description: "Check base case: n ≤ 1" },
-            { lines: [3], description: "Tail call with updated accumulator" }
-          ]
-        },
-        {
-          name: 'Tail Sum',
-          code: `function sum(n, acc = 0) {
-    if (n <= 0) return acc;
-    return sum(n - 1, acc + n);
-  }`,
-          description: 'Sum with accumulator pattern',
-          steps: [
-            { lines: [2], description: "Check base case: n ≤ 0" },
-            { lines: [3], description: "Tail call with updated accumulator" }
-          ]
-        },
-        {
-          name: 'Countdown',
-          code: `function countdown(n) {
-    if (n <= 0) return "Done!";
-    console.log(n);
-    return countdown(n - 1);
-  }`,
-          description: 'Simple countdown using tail recursion',
-          steps: [
-            { lines: [2], description: "Check base case: n ≤ 0" },
-            { lines: [3, 4], description: "Process then tail call" }
-          ]
-        }
-    ]
-  },
-  head: {
-    name: 'Head Recursion',
-    icon: GitBranch,
-    description: 'Processing happens after recursive call returns',
-    code: `function printReverse(n) {
-  if (n <= 0) return;
-  printReverse(n - 1); // Call first
-  console.log(n);      // Process after
+      {
+        name: 'Tail Factorial',
+        code: `int factorial(int n, int acc = 1) {
+  if (n <= 1) return acc;
+  return factorial(n - 1, n * acc);
 }`,
-    examples: [
-              {
-          name: 'Print Reverse',
-          code: `function printReverse(n) {
-    if (n <= 0) return;
-    printReverse(n - 1);
-    console.log(n);
-  }`,
-          description: 'Print numbers in reverse order',
-          steps: [
-            { lines: [2], description: "Check base case: n ≤ 0" },
-            { lines: [3], description: "Recursive call first" },
-            { lines: [4], description: "Process after recursion returns" }
-          ]
-        },
-        {
-          name: 'Reverse String',
-          code: `function reverseString(str, index = 0) {
-    if (index >= str.length) return "";
-    return reverseString(str, index + 1) + str[index];
-  }`,
-          description: 'Build reversed string after recursive calls',
-          steps: [
-            { lines: [2], description: "Check base case: index >= length" },
-            { lines: [3], description: "Recursive call then process" }
-          ]
-        }
+        description: 'Factorial with accumulator (tail-optimizable)',
+        steps: [
+          { lines: [2], description: "Check base case: n ≤ 1" },
+          { lines: [3], description: "Tail call with updated accumulator" }
+        ]
+      }
     ]
   },
   tree: {
     name: 'Tree Recursion',
     icon: TreePine,
     description: 'Multiple recursive calls create tree structure',
-    code: `function fibonacci(n) {
+    code: `int fibonacci(int n) {
   if (n <= 1) return n;
   return fibonacci(n - 1) + fibonacci(n - 2); // Two calls
 }`,
     examples: [
-              {
-          name: 'Fibonacci',
-          code: `function fibonacci(n) {
-    if (n <= 1) return n;
-    return fibonacci(n - 1) + fibonacci(n - 2);
-  }`,
-          description: 'Classic tree recursion with two branches',
-          steps: [
-            { lines: [2], description: "Check base case: n ≤ 1" },
-            { lines: [3], description: "Two recursive calls create tree" }
-          ]
-        },
-        {
-          name: 'Binary Paths',
-          code: `function countPaths(n, m) {
-    if (n === 1 || m === 1) return 1;
-    return countPaths(n-1, m) + countPaths(n, m-1);
-  }`,
-          description: 'Count paths in grid using tree recursion',
-          steps: [
-            { lines: [2], description: "Check base case: edge of grid" },
-            { lines: [3], description: "Two paths: left and up" }
-          ]
-        },
-        {
-          name: 'Tower of Hanoi',
-          code: `function hanoi(n, from, to, aux) {
-    if (n === 1) return move(from, to);
-    hanoi(n-1, from, aux, to);
-    move(from, to);
-    hanoi(n-1, aux, to, from);
-  }`,
-          description: 'Classic puzzle with tree-like call pattern',
-          steps: [
-            { lines: [2], description: "Base case: single disk" },
-            { lines: [3, 5], description: "Two recursive calls" },
-            { lines: [4], description: "Move largest disk" }
-          ]
-        }
+      {
+        name: 'Fibonacci',
+        code: `int fibonacci(int n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}`,
+        description: 'Classic tree recursion with two branches',
+        steps: [
+          { lines: [2], description: "Check base case: n ≤ 1" },
+          { lines: [3], description: "Two recursive calls create tree" }
+        ]
+      }
     ]
   }
 };
@@ -421,28 +257,6 @@ export default function RecursionVisualizer() {
     return finalResult;
   };
 
-  const simulateIndirectRecursion = async (n: number, isEvenCall: boolean = true, level: number = 0, parentId?: string): Promise<boolean> => {
-    const funcName = isEvenCall ? 'isEven' : 'isOdd';
-    const nodeId = addNode(`${funcName}(${n})`, [n], level, parentId);
-    await cancellableDelay(speed);
-
-    if (n === 0) {
-      const result = isEvenCall;
-      updateNode(nodeId, { result, isReturning: true });
-      await cancellableDelay(speed);
-      updateNode(nodeId, { isCompleted: true, isActive: false });
-      return result;
-    }
-
-    const result = await simulateIndirectRecursion(n - 1, !isEvenCall, level + 1, nodeId);
-    
-    updateNode(nodeId, { result, isReturning: true });
-    await cancellableDelay(speed);
-    updateNode(nodeId, { isCompleted: true, isActive: false });
-    
-    return result;
-  };
-
   const simulateTailRecursion = async (n: number, acc: number = 1, level: number = 0, parentId?: string): Promise<number> => {
     const nodeId = addNode(`factorial(${n}, ${acc})`, [n, acc], level, parentId);
     await cancellableDelay(speed);
@@ -461,27 +275,6 @@ export default function RecursionVisualizer() {
     updateNode(nodeId, { isCompleted: true, isActive: false });
     
     return result;
-  };
-
-  const simulateHeadRecursion = async (n: number, level: number = 0, parentId?: string): Promise<string> => {
-    const nodeId = addNode(`print(${n})`, [n], level, parentId);
-    await cancellableDelay(speed);
-
-    if (n <= 0) {
-      updateNode(nodeId, { result: '', isReturning: true });
-      await cancellableDelay(speed);
-      updateNode(nodeId, { isCompleted: true, isActive: false });
-      return '';
-    }
-
-    const result = await simulateHeadRecursion(n - 1, level + 1, nodeId);
-    const finalResult = result + n + ' ';
-    
-    updateNode(nodeId, { result: finalResult, isReturning: true });
-    await cancellableDelay(speed);
-    updateNode(nodeId, { isCompleted: true, isActive: false });
-    
-    return finalResult;
   };
 
   const simulateTreeRecursion = async (n: number, level: number = 0, parentId?: string): Promise<number> => {
@@ -526,14 +319,8 @@ export default function RecursionVisualizer() {
         case 'direct':
           result = await simulateDirectRecursion(input);
           break;
-        case 'indirect':
-          result = await simulateIndirectRecursion(input);
-          break;
         case 'tail':
           result = await simulateTailRecursion(input);
-          break;
-        case 'head':
-          result = await simulateHeadRecursion(input);
           break;
         case 'tree':
           result = await simulateTreeRecursion(Math.min(input, 6)); // Limit for performance
@@ -591,7 +378,7 @@ export default function RecursionVisualizer() {
             <div className="bg-slate-800 rounded-2xl p-6 border border-slate-700">
               <h3 className="text-lg font-semibold text-slate-100 mb-4">Recursion Type</h3>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
                 {Object.entries(RECURSION_TYPES).map(([key, type]) => {
                   const Icon = type.icon;
                   return (
@@ -819,7 +606,7 @@ export default function RecursionVisualizer() {
           <div className="space-y-6">
             <CodeHighlighter
               code={currentExample.code}
-              language="javascript"
+              language="cpp"
               title={currentExample.name}
               steps={currentExample.steps}
               currentStep={currentStep}
@@ -850,27 +637,11 @@ export default function RecursionVisualizer() {
                   </div>
                 )}
                 
-                {selectedType === 'indirect' && (
-                  <div className="text-slate-400 text-xs">
-                    • Two or more functions call each other<br/>
-                    • Mutual recursion pattern<br/>
-                    • Can be harder to trace
-                  </div>
-                )}
-                
                 {selectedType === 'tail' && (
                   <div className="text-slate-400 text-xs">
                     • Recursive call is last operation<br/>
                     • Can be optimized by compiler<br/>
                     • Uses accumulator pattern
-                  </div>
-                )}
-                
-                {selectedType === 'head' && (
-                  <div className="text-slate-400 text-xs">
-                    • Processing after recursive call<br/>
-                    • Stack unwinds before processing<br/>
-                    • Reverses order of operations
                   </div>
                 )}
                 
@@ -910,4 +681,4 @@ export default function RecursionVisualizer() {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );
-} 
+}

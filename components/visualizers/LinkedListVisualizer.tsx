@@ -15,57 +15,60 @@ interface Node {
 
 // Linked List operation code templates
 const LINKEDLIST_OPERATIONS = {
-  insert: `function insertNode(head, value, position) {
+  insert: `Node* insertNode(Node* head, int value, int position) {
   // Create new node
-  const newNode = { value, next: null };
+  Node* newNode = new Node(value);
   
   // Insert at beginning
-  if (position === 0) {
-    newNode.next = head;
+  if (position == 0) {
+    newNode->next = head;
     return newNode;
   }
   
   // Traverse to position
-  let current = head;
-  for (let i = 0; i < position - 1; i++) {
-    current = current.next;
+  Node* current = head;
+  for (int i = 0; i < position - 1 && current != nullptr; i++) {
+    current = current->next;
   }
   
   // Insert the new node
-  newNode.next = current.next;
-  current.next = newNode;
+  newNode->next = current->next;
+  current->next = newNode;
   
   return head;
 }`,
 
-  delete: `function deleteNode(head, position) {
+  delete: `Node* deleteNode(Node* head, int position) {
   // Delete from beginning
-  if (position === 0) {
-    return head.next;
+  if (position == 0) {
+    Node* newHead = head->next;
+    delete head;
+    return newHead;
   }
   
   // Traverse to position
-  let current = head;
-  for (let i = 0; i < position - 1; i++) {
-    current = current.next;
+  Node* current = head;
+  for (int i = 0; i < position - 1 && current != nullptr; i++) {
+    current = current->next;
   }
   
   // Remove the node
-  const nodeToDelete = current.next;
-  current.next = nodeToDelete.next;
+  Node* nodeToDelete = current->next;
+  current->next = nodeToDelete->next;
+  delete nodeToDelete;
   
   return head;
 }`,
 
-  traverse: `function traverseList(head) {
+  traverse: `std::vector<int> traverseList(Node* head) {
   // Start from head
-  let current = head;
-  const values = [];
+  Node* current = head;
+  std::vector<int> values;
   
   // Visit each node
-  while (current !== null) {
-    values.push(current.value);
-    current = current.next;
+  while (current != nullptr) {
+    values.push_back(current->value);
+    current = current->next;
   }
   
   return values;
@@ -74,26 +77,26 @@ const LINKEDLIST_OPERATIONS = {
 
 const CODE_STEPS = {
   insert: [
-    { line: 2, description: "Create a new node with the given value" },
-    { lines: [5, 6, 7], description: "Check if inserting at beginning and handle special case" },
-    { lines: [11, 12], description: "Start from head to traverse to position" },
-    { lines: [12, 13, 14], description: "Traverse to the position before insertion point" },
-    { lines: [17, 18], description: "Link new node to next and previous node to new node" },
-    { line: 20, description: "Return the head of the modified list" }
+    { line: 3, description: "Create a new node with the given value" },
+    { lines: [6, 7, 8, 9], description: "Check if inserting at beginning and handle special case" },
+    { lines: [12, 13], description: "Start from head to traverse to position" },
+    { lines: [13, 14, 15], description: "Traverse to the position before insertion point" },
+    { lines: [18, 19], description: "Link new node to next and previous node to new node" },
+    { line: 21, description: "Return the head of the modified list" }
   ],
   
   delete: [
-    { lines: [2, 3], description: "Check if deleting from beginning and return new head" },
-    { lines: [7, 8], description: "Start from head to traverse to position" },
-    { lines: [8, 9, 10], description: "Traverse to the node before deletion point" },
-    { lines: [13, 14], description: "Get reference and skip over the node to be deleted" },
-    { line: 16, description: "Return the head of the modified list" }
+    { lines: [3, 4, 5, 6, 7], description: "Check if deleting from beginning, handle memory, and return new head" },
+    { lines: [10, 11], description: "Start from head to traverse to position" },
+    { lines: [11, 12, 13], description: "Traverse to the node before deletion point" },
+    { lines: [16, 17, 18], description: "Get reference, skip over the node, and free memory" },
+    { line: 20, description: "Return the head of the modified list" }
   ],
   
   traverse: [
-    { lines: [2, 3], description: "Start traversal from head and initialize array" },
-    { lines: [7, 8, 9], description: "Loop: check node exists, add value, move to next" }, 
-    { lines: [7,8,9], description: "Return the collected values" }
+    { lines: [3, 4], description: "Start traversal from head and initialize vector" },
+    { lines: [7, 8, 9, 10], description: "Loop: check node exists, add value, move to next" }, 
+    { line: 12, description: "Return the collected values" }
   ]
 };
 
@@ -341,7 +344,7 @@ export default function LinkedListVisualizer() {
     await delay(800);
     showInfo('Starting traversal from head node');
 
-    // Step 2: Initialize array
+    // Step 2: Initialize vector
     setCurrentStep(1);
     await delay(600);
 
@@ -356,7 +359,7 @@ export default function LinkedListVisualizer() {
       showInfo(`Visiting node at position ${i} with value ${nodes[i].value}`);
       await delay(1000);
       
-      // Show current.next operation if not the last node
+      // Show current->next operation if not the last node
       if (i < nodes.length - 1) {
         showInfo(`Moving to next node...`);
         await delay(600);
@@ -805,11 +808,10 @@ export default function LinkedListVisualizer() {
           <div className="space-y-6">
             <CodeHighlighter
               code={LINKEDLIST_OPERATIONS[currentOperation as keyof typeof LINKEDLIST_OPERATIONS]}
-              language="javascript"
+              language="cpp"
               title={`Linked List ${currentOperation.charAt(0).toUpperCase() + currentOperation.slice(1)} Operation`}
               steps={CODE_STEPS[currentOperation as keyof typeof CODE_STEPS]}
               currentStep={currentStep}
-
             />
           </div>
         </div>
@@ -1033,4 +1035,4 @@ export default function LinkedListVisualizer() {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );
-} 
+}

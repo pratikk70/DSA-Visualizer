@@ -17,31 +17,27 @@ interface ArrayElement {
   isRemoving?: boolean;
 }
 
-
-
 const ARRAY_OPERATIONS = {
-  insert: `function insertAtIndex(array, index, value) {
-  // Check if index is valid
-  if (index < 0 || index > array.length) {
-    throw new Error('Index out of bounds');
+  insert: `void insertAtIndex(int arr[], int& size, int index, int value) {
+  if (index < 0 || index > size) {
+    throw std::out_of_range("Invalid index");
   }
   
   // Shift elements to the right
-  for (let i = array.length; i > index; i--) {
-    array[i] = array[i - 1];
+  for (int i = size; i > index; i--) {
+    arr[i] = arr[i - 1];
   }
   
   // Insert the new value
-  array[index] = value;
-  
-  return array;
+  arr[index] = value;
+  size++;
 }`,
   
-  search: `function linearSearch(array, target) {
+  search: `int searchArray(int arr[], int size, int target) {
   // Iterate through each element
-  for (let i = 0; i < array.length; i++) {
+  for (int i = 0; i < size; i++) {
     // Check if current element matches target
-    if (array[i] === target) {
+    if (arr[i] == target) {
       return i; // Found! Return the index
     }
   }
@@ -49,46 +45,43 @@ const ARRAY_OPERATIONS = {
   return -1; // Not found
 }`,
   
-  delete: `function deleteAtIndex(array, index) {
-  // Check if index is valid
-  if (index < 0 || index >= array.length) {
-    throw new Error('Index out of bounds');
+  delete: `void deleteAtIndex(int arr[], int& size, int index) {
+  if (index < 0 || index >= size) {
+    throw std::out_of_range("Invalid index");
   }
   
   // Shift elements to the left
-  for (let i = index; i < array.length - 1; i++) {
-    array[i] = array[i + 1];
+  for (int i = index; i < size - 1; i++) {
+    arr[i] = arr[i + 1];
   }
   
   // Reduce array length
-  array.length--;
-  
-  return array;
+  size--;
 }`
 };
 
 const CODE_STEPS = {
   insert: [
-    { lines: [2, 3, 4, 5], description: "Validate that the index is within valid bounds" },
-    { lines: [7, 8, 9, 10], description: "Start shifting elements from the end to make space" },
-    { line: 9, description: "Move each element one position to the right" },
-    { line: 13, description: "Insert the new value at the specified index" },
-    { line: 15, description: "Return the modified array" }
+    { lines: [2, 3, 4], description: "Validate that the index is within valid bounds" },
+    { lines: [6, 7, 8, 9], description: "Start shifting elements from the end to make space" },
+    { line: 8, description: "Move each element one position to the right" },
+    { line: 12, description: "Insert the new value at the specified index" },
+    { line: 13, description: "Increment the array size" }
   ],
   
   search: [
-    { lines: [2, 3, 4, 5, 6, 7, 8], description: "Start iterating through the array from index 0" },
-    { lines: [4, 5, 6, 7], description: "Compare current element with the target value" },
-    { lines: [5, 6], description: "Found a match! Return the current index" },
-    { lines: [10], description: "Target not found in the array, return -1" }
+    { lines: [3, 4, 5, 6, 7], description: "Start iterating through the array from index 0" },
+    { lines: [5, 6, 7], description: "Compare current element with the target value" },
+    { line: 6, description: "Found a match! Return the current index" },
+    { line: 10, description: "Target not found in the array, return -1" }
   ],
   
   delete: [
     { lines: [2, 3, 4], description: "Validate that the index is within valid bounds" },
-    { lines: [7, 8, 9], description: "Start shifting elements from the deletion point" },
+    { lines: [6, 7, 8, 9], description: "Start shifting elements from the deletion point" },
     { line: 8, description: "Move each element one position to the left" },
-    { line: 12, description: "Reduce the array length to remove the last element" },
-    { line: 14, description: "Return the modified array" }
+    { line: 12, description: "Reduce the array size to remove the last element" },
+    { line: 13, description: "Operation completes" }
   ]
 };
 
@@ -483,7 +476,7 @@ export default function ArrayVisualizer() {
           <div className="space-y-6">
             <CodeHighlighter
               code={currentCode}
-              language="javascript"
+              language="cpp"
               title={`Array ${currentOperation.charAt(0).toUpperCase() + currentOperation.slice(1)} Operation`}
               steps={currentCodeSteps}
               currentStep={currentStep}
@@ -711,4 +704,4 @@ export default function ArrayVisualizer() {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );
-} 
+}

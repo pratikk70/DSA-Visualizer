@@ -24,76 +24,81 @@ interface TreeNode {
 }
 
 const TREE_OPERATIONS = {
-  insert: `function insert(root, value) {
+  insert: `TreeNode* insert(TreeNode* root, int value) {
   // Base case: create new node
-  if (root === null) {
+  if (root == nullptr) {
     return new TreeNode(value);
   }
   
   // Recursive case: traverse tree
-  if (value < root.value) {
-    root.left = insert(root.left, value);
-  } else if (value > root.value) {
-    root.right = insert(root.right, value);
+  if (value < root->value) {
+    root->left = insert(root->left, value);
+  } else if (value > root->value) {
+    root->right = insert(root->right, value);
   }
   
   return root;
 }`,
 
-  search: `function search(root, value) {
+  search: `TreeNode* search(TreeNode* root, int value) {
   // Base case: empty tree or found
-  if (root === null || root.value === value) {
+  if (root == nullptr || root->value == value) {
     return root;
   }
   
   // Search left subtree
-  if (value < root.value) {
-    return search(root.left, value);
+  if (value < root->value) {
+    return search(root->left, value);
   }
   
   // Search right subtree
-  return search(root.right, value);
+  return search(root->right, value);
 }`,
 
-  delete: `function deleteNode(root, value) {
+  delete: `TreeNode* deleteNode(TreeNode* root, int value) {
   // Base case: empty tree
-  if (root === null) {
+  if (root == nullptr) {
     return root;
   }
   
   // Find the node to delete
-  if (value < root.value) {
-    root.left = deleteNode(root.left, value);
-  } else if (value > root.value) {
-    root.right = deleteNode(root.right, value);
+  if (value < root->value) {
+    root->left = deleteNode(root->left, value);
+  } else if (value > root->value) {
+    root->right = deleteNode(root->right, value);
   } else {
     // Node to delete found
     
     // Case 1: No children (leaf node)
-    if (root.left === null && root.right === null) {
-      return null;
+    if (root->left == nullptr && root->right == nullptr) {
+      delete root;
+      return nullptr;
     }
     
     // Case 2: One child
-    if (root.left === null) {
-      return root.right;
+    if (root->left == nullptr) {
+      TreeNode* temp = root->right;
+      delete root;
+      return temp;
     }
-    if (root.right === null) {
-      return root.left;
+    if (root->right == nullptr) {
+      TreeNode* temp = root->left;
+      delete root;
+      return temp;
     }
     
     // Case 3: Two children
     // Find inorder successor (smallest in right subtree)
-    let successor = root.right;
-    while (successor.left !== null) {
-      successor = successor.left;
+    TreeNode* successor = root->right;
+    while (successor->left != nullptr) {
+      successor = successor->left;
     }
     
     // Replace value with successor
-    root.value = successor.value;
+    root->value = successor->value;
     
     // Delete the successor
-    root.right = deleteNode(root.right, successor.value);
+    root->right = deleteNode(root->right, successor->value);
   }
   
   return root;
@@ -102,33 +107,33 @@ const TREE_OPERATIONS = {
 
 const CODE_STEPS = {
   insert: [
-    { lines: [2, 3], description: "Check if we've reached an empty spot (base case)" },
+    { lines: [3, 4], description: "Check if we've reached an empty spot (base case)" },
     { line: 4, description: "Create and return a new node with the value" },
-    { lines: [7, 8], description: "Compare value with current node to decide direction" },
+    { lines: [8, 10], description: "Compare value with current node to decide direction" },
     { line: 9, description: "Go left if value is smaller" },
     { lines: [10, 11], description: "Go right if value is larger" },
     { line: 14, description: "Return the modified tree" }
   ],
   
   search: [
-    { lines: [2, 3], description: "Check if tree is empty or value is found" },
+    { line: 3, description: "Check if tree is empty or value is found" },
     { line: 4, description: "Return the node (null if not found, node if found)" },
-    { lines: [7, 8], description: "If target is smaller, search left subtree" },
+    { line: 8, description: "If target is smaller, search left subtree" },
     { line: 9, description: "Recursively search the left side" },
-    { lines: [12, 13], description: "Otherwise, search right subtree" }
+    { line: 13, description: "Otherwise, search right subtree" }
   ],
   
   delete: [
-    { lines: [2, 3], description: "Check if tree is empty" },
-    { lines: [6, 7], description: "Find the node to delete by comparing values" },
-    { line: 8, description: "Go left if target is smaller" },
-    { lines: [9, 10], description: "Go right if target is larger" },
+    { lines: [3, 4], description: "Check if tree is empty" },
+    { lines: [8, 10], description: "Find the node to delete by comparing values" },
+    { line: 9, description: "Go left if target is smaller" },
+    { lines: [10, 11], description: "Go right if target is larger" },
     { line: 12, description: "Node found! Handle deletion cases" },
-    { lines: [14, 15], description: "Case 1: Leaf node (no children)" },
-    { lines: [19, 20, 21, 22], description: "Case 2: Node with one child" },
-    { lines: [25, 26, 27, 28], description: "Case 3: Node with two children - find successor" },
-    { line: 31, description: "Replace current node's value with successor's value" },
-    { line: 34, description: "Delete the successor node" }
+    { lines: [16, 17, 18], description: "Case 1: Leaf node (no children)" },
+    { lines: [22, 23, 24, 25, 27, 28, 29, 30], description: "Case 2: Node with one child" },
+    { lines: [35, 36, 37, 38], description: "Case 3: Node with two children - find successor" },
+    { line: 41, description: "Replace current node's value with successor's value" },
+    { line: 44, description: "Delete the successor node" }
   ]
 };
 
@@ -274,8 +279,6 @@ export default function BinaryTreeVisualizer() {
     setCurrentOperation('search');
 
     const searchRecursive = async (node: TreeNode | null, val: number): Promise<TreeNode | null> => {
-      const _steps = CODE_STEPS.search;
-      
       // Step 0: Check if empty or found
       setCurrentStep(0);
       await delay(animationSpeed);
@@ -741,7 +744,7 @@ export default function BinaryTreeVisualizer() {
           <div className="space-y-6">
             <CodeHighlighter
               code={currentCode}
-              language="javascript"
+              language="cpp"
               title={`Binary Tree ${currentOperation.charAt(0).toUpperCase() + currentOperation.slice(1)} Operation`}
               steps={currentCodeSteps}
               currentStep={currentStep}

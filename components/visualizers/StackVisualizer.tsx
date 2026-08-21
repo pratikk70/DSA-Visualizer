@@ -16,67 +16,56 @@ interface StackElement {
 }
 
 const STACK_OPERATIONS = {
-  push: `function push(stack, value) {
-  // Add element to the top of stack
-  stack[stack.top] = value;
-  
+  push: `void push(int stack[], int& top, int value) {
   // Move top pointer forward
-  stack.top++;
+  top++;
   
-  // Increment stack size
-  stack.size++;
-  
-  return stack;
+  // Add element to the top of stack
+  stack[top] = value;
 }`,
   
-  pop: `function pop(stack) {
+  pop: `int pop(int stack[], int& top) {
   // Check if stack is empty
-  if (stack.size === 0) {
-    throw new Error('Stack underflow');
+  if (top < 0) {
+    throw std::underflow_error("Stack Empty");
   }
   
   // Get top element
-  const topElement = stack[stack.top];
+  int topElement = stack[top];
   
   // Move top pointer backward
-  stack.top--;
-  
-  // Decrement stack size
-  stack.size--;
+  top--;
   
   return topElement;
 }`,
   
-  peek: `function peekTop(stack) {
+  peek: `int peekTop(int stack[], int top) {
   // Check if stack is empty
-  if (stack.size === 0) {
-    return null;
+  if (top < 0) {
+    throw std::underflow_error("Stack Empty");
   }
   
   // Return top element without removing
-  return stack[stack.top];
+  return stack[top];
 }`
 };
 
 const CODE_STEPS = {
   push: [
-    { lines: [2, 3], description: "Add the new element to the top of the stack" },
-    { lines: [5, 6], description: "Move the top pointer to the next position" },
-    { lines: [8, 9], description: "Increment the stack size counter" },
-    { line: 11, description: "Return the modified stack" }
+    { lines: [2, 3], description: "Move the top pointer forward" },
+    { lines: [5, 6], description: "Add the new element to the top of the stack" }
   ],
   
   pop: [
-    { lines: [2, 3, 4], description: "Check if the stack is empty (underflow condition)" },
+    { lines: [2, 3, 4, 5], description: "Check if the stack is empty (underflow condition)" },
     { lines: [7, 8], description: "Get reference to the top element" },
-    { lines: [10, 11], description: "Move the top pointer to the previous position" },
-    { lines: [13, 14], description: "Decrement the stack size counter" },
-    { line: 16, description: "Return the removed element" }
+    { lines: [10, 11], description: "Move the top pointer backward" },
+    { line: 13, description: "Return the removed element" }
   ],
   
   peek: [
-    { lines: [2, 3, 4], description: "Check if the stack is empty" },
-    { line: 7, description: "Return the top element without removing it" }
+    { lines: [2, 3, 4, 5], description: "Check if the stack is empty" },
+    { lines: [7, 8], description: "Return the top element without removing it" }
   ]
 };
 
@@ -364,7 +353,7 @@ export default function StackVisualizer() {
           <div className="space-y-6">
             <CodeHighlighter
               code={STACK_OPERATIONS[currentOperation as keyof typeof STACK_OPERATIONS]}
-              language="javascript"
+              language="cpp"
               title={`Stack ${currentOperation.charAt(0).toUpperCase() + currentOperation.slice(1)} Operation`}
               steps={CODE_STEPS[currentOperation as keyof typeof CODE_STEPS]}
               currentStep={currentStep}
