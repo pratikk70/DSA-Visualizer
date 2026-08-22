@@ -17,20 +17,20 @@ interface ArrayElement {
   isActive?: boolean;
 }
 
-const BUBBLE_SORT_CODE = `function bubbleSort(array) {
-  const n = array.length;
+const BUBBLE_SORT_CODE = `void bubbleSort(std::vector<int>& array) {
+  int n = array.size();
   
   // Outer loop for number of passes
-  for (let i = 0; i < n - 1; i++) {
-    let swapped = false;
+  for (int i = 0; i < n - 1; i++) {
+    bool swapped = false;
     
     // Inner loop for comparisons in current pass
-    for (let j = 0; j < n - i - 1; j++) {
+    for (int j = 0; j < n - i - 1; j++) {
       
       // Compare adjacent elements
       if (array[j] > array[j + 1]) {
         // Swap elements if they are in wrong order
-        [array[j], array[j + 1]] = [array[j + 1], array[j]];
+        std::swap(array[j], array[j + 1]);
         swapped = true;
       }
     }
@@ -38,20 +38,18 @@ const BUBBLE_SORT_CODE = `function bubbleSort(array) {
     // If no swapping occurred, array is sorted
     if (!swapped) break;
   }
-  
-  return array;
 }`;
 
 const CODE_STEPS = {
   bubbleSort: [
     { lines: [2], description: "Get the length of the array" },
-    { lines: [5, 6], description: "Start outer loop for number of passes" },
+    { lines: [4, 5], description: "Start outer loop for number of passes" },
     { lines: [6], description: "Initialize swapped flag for this pass" },
     { lines: [8, 9], description: "Start inner loop for comparisons in current pass" },
     { lines: [11, 12], description: "Compare adjacent elements" },
-    { lines: [12, 13, 14], description: "Swap elements if they are in wrong order" },
-    { lines: [17, 18, 19, 20], description: "Check if any swaps occurred in this pass" },
-    { lines: [23], description: "Return the sorted array" }
+    { lines: [13, 14, 15], description: "Swap elements if they are in wrong order" },
+    { lines: [19, 20], description: "Check if any swaps occurred in this pass" },
+    { lines: [22], description: "Array is completely sorted" }
   ]
 };
 
@@ -429,11 +427,10 @@ export default function BubbleSortVisualizer() {
           <div className="space-y-6">
             <CodeHighlighter
               code={BUBBLE_SORT_CODE}
-              language="javascript"
+              language="cpp"
               title="Bubble Sort Algorithm"
               steps={CODE_STEPS.bubbleSort}
               currentStep={currentStep}
-
             />
           </div>
         </div>
@@ -631,4 +628,4 @@ export default function BubbleSortVisualizer() {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );
-} 
+}

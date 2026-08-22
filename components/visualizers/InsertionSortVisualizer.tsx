@@ -23,14 +23,14 @@ interface ArrayElement {
   isInserting?: boolean;
 }
 
-const INSERTION_SORT_CODE = `function insertionSort(array) {
-  const n = array.length;
+const INSERTION_SORT_CODE = `void insertionSort(std::vector<int>& array) {
+  int n = array.size();
   
   // Start from second element
-  for (let i = 1; i < n; i++) {
+  for (int i = 1; i < n; i++) {
     // Current element to be inserted
-    let key = array[i];
-    let j = i - 1;
+    int key = array[i];
+    int j = i - 1;
     
     // Shift elements to the right
     while (j >= 0 && array[j] > key) {
@@ -41,18 +41,16 @@ const INSERTION_SORT_CODE = `function insertionSort(array) {
     // Insert the key at correct position
     array[j + 1] = key;
   }
-  
-  return array;
 }`;
 
 const CODE_STEPS = {
   insertionSort: [
     { lines: [2], description: "Get the length of the array" },
     { lines: [4, 5], description: "Start from second element (index 1)" },
-    { lines: [6, 7], description: "Store current element as key and set position" },
-    { lines: [9, 10, 11, 12], description: "Shift larger elements to the right" },
-    { lines: [15], description: "Insert key at correct position" },
-    { lines: [18], description: "Return the sorted array" }
+    { lines: [7, 8], description: "Store current element as key and set position" },
+    { lines: [11, 12, 13, 14], description: "Shift larger elements to the right" },
+    { lines: [17], description: "Insert key at correct position" },
+    { lines: [19], description: "Array is completely sorted" }
   ]
 };
 
@@ -575,11 +573,10 @@ export default function InsertionSortVisualizer() {
           <div className="space-y-6">
             <CodeHighlighter
               code={INSERTION_SORT_CODE}
-              language="javascript"
+              language="cpp"
               title="Insertion Sort Algorithm"
               steps={CODE_STEPS.insertionSort}
               currentStep={currentStep}
-
             />
           </div>
         </div>
@@ -717,8 +714,8 @@ export default function InsertionSortVisualizer() {
             {/* Use Cases */}
             <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-3xl p-8 border border-slate-700/50 shadow-2xl">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-pink-500/20 rounded-xl flex items-center justify-center">
-                  <svg className="w-6 h-6 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-10 h-10 bg-cyan-500/20 rounded-xl flex items-center justify-center">
+                  <svg className="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
                 </div>
@@ -782,4 +779,4 @@ export default function InsertionSortVisualizer() {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );
-} 
+}

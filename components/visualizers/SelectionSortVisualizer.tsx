@@ -18,16 +18,16 @@ interface ArrayElement {
   isMinimum?: boolean;
 }
 
-const SELECTION_SORT_CODE = `function selectionSort(array) {
-  const n = array.length;
+const SELECTION_SORT_CODE = `void selectionSort(std::vector<int>& array) {
+  int n = array.size();
   
   // Outer loop for each position
-  for (let i = 0; i < n - 1; i++) {
+  for (int i = 0; i < n - 1; i++) {
     // Find minimum element in remaining array
-    let minIndex = i;
+    int minIndex = i;
     
     // Inner loop to find minimum
-    for (let j = i + 1; j < n; j++) {
+    for (int j = i + 1; j < n; j++) {
       // Compare current element with minimum
       if (array[j] < array[minIndex]) {
         minIndex = j;
@@ -35,23 +35,21 @@ const SELECTION_SORT_CODE = `function selectionSort(array) {
     }
     
     // Swap minimum element with first element
-    if (minIndex !== i) {
-      [array[i], array[minIndex]] = [array[minIndex], array[i]];
+    if (minIndex != i) {
+      std::swap(array[i], array[minIndex]);
     }
   }
-  
-  return array;
 }`;
 
 const CODE_STEPS = {
   selectionSort: [
     { lines: [2], description: "Get the length of the array" },
     { lines: [4, 5], description: "Start outer loop for each position" },
-    { lines: [6], description: "Initialize minimum index to current position" },
-    { lines: [8, 9], description: "Start inner loop to find minimum element" },
-    { lines: [10, 11, 12, 13], description: "Compare and update minimum index" },
-    { lines: [16, 17, 18], description: "Swap minimum element with current position" },
-    { lines: [21], description: "Return the sorted array" }
+    { lines: [7], description: "Initialize minimum index to current position" },
+    { lines: [9, 10], description: "Start inner loop to find minimum element" },
+    { lines: [11, 12, 13, 14], description: "Compare and update minimum index" },
+    { lines: [17, 18, 19, 20], description: "Swap minimum element with current position" },
+    { lines: [22], description: "Array is completely sorted" }
   ]
 };
 
@@ -487,11 +485,10 @@ export default function SelectionSortVisualizer() {
           <div className="space-y-6">
             <CodeHighlighter
               code={SELECTION_SORT_CODE}
-              language="javascript"
+              language="cpp"
               title="Selection Sort Algorithm"
               steps={CODE_STEPS.selectionSort}
               currentStep={currentStep}
-
             />
           </div>
         </div>
@@ -697,4 +694,4 @@ export default function SelectionSortVisualizer() {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );
-} 
+}

@@ -21,67 +21,60 @@ interface ArrayElement {
   rightChild?: boolean;
 }
 
-const MERGE_SORT_CODE = `function mergeSort(array) {
+const MERGE_SORT_CODE = `void mergeSort(std::vector<int>& array, int left, int right) {
   // Base case: arrays with 0 or 1 element are already sorted
-  if (array.length <= 1) {
-    return array;
-  }
+  if (left >= right) return;
   
-  // Divide: split array into two halves
-  const middle = Math.floor(array.length / 2);
-  const left = array.slice(0, middle);
-  const right = array.slice(middle);
+  // Divide: split array into two halves at middle point
+  int mid = left + (right - left) / 2;
   
   // Conquer: recursively sort both halves
-  const sortedLeft = mergeSort(left);
-  const sortedRight = mergeSort(right);
+  mergeSort(array, left, mid);
+  mergeSort(array, mid + 1, right);
   
-  // Combine: merge the sorted halves
-  return merge(sortedLeft, sortedRight);
+  // Combine: merge the sorted halves together
+  merge(array, left, mid, right);
 }
 
-function merge(left, right) {
-  let result = [];
-  let leftIndex = 0;
-  let rightIndex = 0;
+void merge(std::vector<int>& array, int left, int mid, int right) {
+  // Initialize merge process with temporary arrays
+  std::vector<int> L(array.begin() + left, array.begin() + mid + 1);
+  std::vector<int> R(array.begin() + mid + 1, array.begin() + right + 1);
+  int i = 0, j = 0, k = left;
   
   // Compare elements and merge in sorted order
-  while (leftIndex < left.length && rightIndex < right.length) {
-    if (left[leftIndex] <= right[rightIndex]) {
-      result.push(left[leftIndex]);
-      leftIndex++;
+  while (i < L.size() && j < R.size()) {
+    if (L[i] <= R[j]) {
+      array[k++] = L[i++];
     } else {
-      result.push(right[rightIndex]);
-      rightIndex++;
+      array[k++] = R[j++];
     }
   }
   
   // Add remaining elements from left array
-  while (leftIndex < left.length) {
-    result.push(left[leftIndex]);
-    leftIndex++;
+  while (i < L.size()) {
+    array[k++] = L[i++];
   }
   
   // Add remaining elements from right array
-  while (rightIndex < right.length) {
-    result.push(right[rightIndex]);
-    rightIndex++;
+  while (j < R.size()) {
+    array[k++] = R[j++];
   }
   
-  return result;
+  // Merge completed
 }`;
 
 const CODE_STEPS = {
   mergeSort: [
-    { lines: [3, 4], description: "Check base case: arrays with 0 or 1 element are already sorted" },
-    { lines: [8, 9, 10], description: "Divide: split array into two halves at middle point" },
-    { lines: [13, 14], description: "Conquer: recursively sort both halves" },
-    { lines: [17], description: "Combine: merge the sorted halves together" },
-    { lines: [21, 22, 23], description: "Initialize merge process with pointers and result array" },
-    { lines: [26, 27, 28, 29, 30, 31, 32, 33, 34], description: "Compare elements and merge in sorted order" },
-    { lines: [37, 38, 39, 40], description: "Add remaining elements from left array" },
-    { lines: [43, 44, 45, 46], description: "Add remaining elements from right array" },
-    { lines: [48], description: "Return merged result array" }
+    { lines: [3], description: "Check base case: arrays with 0 or 1 element are already sorted" },
+    { lines: [6], description: "Divide: split array into two halves at middle point" },
+    { lines: [9, 10], description: "Conquer: recursively sort both halves" },
+    { lines: [13], description: "Combine: merge the sorted halves together" },
+    { lines: [18, 19, 20], description: "Initialize merge process with temporary arrays" },
+    { lines: [23, 24, 25, 26, 27, 28, 29], description: "Compare elements and merge in sorted order" },
+    { lines: [32, 33, 34], description: "Add remaining elements from left array" },
+    { lines: [37, 38, 39], description: "Add remaining elements from right array" },
+    { lines: [41, 42], description: "Merge completed in-place" }
   ]
 };
 
@@ -590,7 +583,7 @@ export default function MergeSortVisualizer() {
           <div className="space-y-6">
             <CodeHighlighter
               code={MERGE_SORT_CODE}
-              language="javascript"
+              language="cpp"
               title="Merge Sort Algorithm"
               steps={CODE_STEPS.mergeSort}
               currentStep={currentStep}
@@ -712,4 +705,4 @@ export default function MergeSortVisualizer() {
       <ToastContainer toasts={toasts} onRemove={removeToast} />
     </div>
   );
-} 
+}
